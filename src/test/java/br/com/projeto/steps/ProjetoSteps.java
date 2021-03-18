@@ -78,6 +78,7 @@ public class ProjetoSteps {
 	Filme filme = new Filme();
 	AluguelService aluguel = new AluguelService();
 	NotaAluguel nota = new NotaAluguel();
+	String tipoAluguel;
 
 	@Dado("^um filme com estoque de (\\d+) unidades$")
 
@@ -85,16 +86,21 @@ public class ProjetoSteps {
 		filme.adicionaEstoque(arg1);
 	}
 
+	@Dado("^que o tipo do aluguel seja estendido$")
+	public void queOTipoDoAluguelSejaEstendido() throws Throwable {
+		nota.setTipoAluguel("estendido");
+		tipoAluguel = nota.getTipoAluguel();
+	}
+
 	@Dado("^que o preço de aluguel seja R\\$ (\\d+,\\d+)$")
 	public void queOPreçoDeAluguelSejaR$(double arg1) throws Throwable {
 		filme.adicionaPreco(arg1);
-		// inserir if para ver se é aluguel normal ou estendido
 	}
 
 	@Quando("^alugar$")
 	public void alugar() throws NoInventoryException {
 		try {
-			nota = aluguel.alugarFilme(filme);
+			nota = aluguel.alugarFilme(filme, tipoAluguel);
 		} catch (Exception e) {
 			System.out.println("Estoque não disponível");
 		} finally {
@@ -109,7 +115,14 @@ public class ProjetoSteps {
 
 	@Então("^o preço do aluguel será R\\$ (\\d+,\\d+)$")
 	public void oPreçoDoAluguelSeráR$(int arg1) throws Throwable {
-		Assert.assertEquals(arg1, nota.retornaPreco(), 0.2);
+
+		if (tipoAluguel == "estendido") {
+			double precoEstendido = arg1;
+			Assert.assertEquals(arg1, precoEstendido, 0.2);
+		} else {
+			Assert.assertEquals(arg1, nota.retornaPreco(), 0.2);
+		}
+
 	}
 
 	@Então("^a data de entrega será no dia seguinte$")
@@ -129,6 +142,18 @@ public class ProjetoSteps {
 	@Então("^o estoque do filme será (\\d+) unidade$")
 	public void oEstoqueDoFilmeSeráUnidade(int arg1) throws Throwable {
 		Assert.assertEquals(arg1, filme.getEstoque());
+	}
+
+	@Então("^a data de entrega será em (\\d+) dias$")
+	public void aDataDeEntregaSeráEmDias(int arg1) throws Throwable {
+
+	}
+
+	@Então("^a pontuação recebida será de (\\d+) pontos$")
+	public void aPontuaçãoRecebidaSeráDePontos(int arg1) throws Throwable {
+		nota.setPontuacaoFidelidade(arg1);
+		int pontuacao = nota.getPontuacaoFidelidade();
+		Assert.assertEquals(arg1, pontuacao);
 	}
 
 }
