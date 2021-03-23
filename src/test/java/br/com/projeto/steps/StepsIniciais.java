@@ -7,6 +7,10 @@ import java.util.Date;
 
 import org.junit.Assert;
 
+import br.com.projeto.entities.Filme;
+import br.com.projeto.entities.NotaAluguel;
+import br.com.projeto.exception.NoInventoryException;
+import br.com.projeto.services.AluguelService;
 import br.com.projeto.transformer.DateConverter;
 import cucumber.api.Transform;
 import cucumber.api.java.pt.Dado;

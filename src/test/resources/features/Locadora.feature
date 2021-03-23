@@ -2,14 +2,22 @@
 
 Funcionalidade: Como um usuário  quero cadastrar aluguéis de filmes para Controlar preços e datas de entrega
 
+
 @Locadora
-Cenário: Deve alugar um filme com sucesso
+Esquema do Cenário: Deve alugar o filme em determinadas condições
 Dado um filme com estoque de 2 unidades
-E que o preço de aluguel seja R$ 3,00
+E que o preço de aluguel seja R$ <preco>
+E que o tipo do aluguel seja <tipo>
 Quando alugar
-Então o preço do aluguel será R$ 3,00
-E a data de entrega será no dia seguinte
-E o estoque do filme será 1 unidade
+Então o preço do aluguel será R$ <precoFinal>
+E a data de entrega será em <diasParaEntrega> dias
+E a pontuação recebida será de <pontuacaoCliente> pontos
+
+Exemplos:
+|preco   |    tipo    |  precoFinal  |  diasParaEntrega  |  pontuacaoCliente  |
+|  4,00  | estendido  |     8,00     |        3          |          2         |
+|  4,00  |   comum    |     4,00     |        1          |          1         |
+|  5,00  |  semanal   |    15,00     |        7          |          3         |
 
 @Locadora
 Cenário: Não deve alugar filme sem estoque 
@@ -18,12 +26,4 @@ Quando alugar
 Então não será possível por falta de estoque
 E o estoque do filme será 0 unidade
 
-@Locadora
-Cenário: Deve dar condições especiais para categoria estendida
-Dado um filme com estoque de 2 unidades
-E que o preço de aluguel seja R$ 4,00
-E que o tipo do aluguel seja estendido
-Quando alugar
-Então o preço do aluguel será R$ 8,00
-E a data de entrega será em 3 dias
-E a pontuação recebida será de 2 pontos
+

@@ -19,28 +19,40 @@ public class LocadoraSteps {
 	AluguelService aluguel = new AluguelService();
 	NotaAluguel nota = new NotaAluguel();
 	String tipoAluguel;
+	int pontuacao;
 
 	@Dado("^um filme com estoque de (\\d+) unidades$")
 
 	public void umFilmeComEstoqueDeUnidades(int arg1) throws Throwable {
 		filme.adicionaEstoque(arg1);
+		int estoqueFilme = filme.getEstoque();
+		Assert.assertEquals(arg1, arg1);
 	}
 
-	@Dado("^que o tipo do aluguel seja estendido$")
-	public void queOTipoDoAluguelSejaEstendido() throws Throwable {
-		nota.setTipoAluguel("estendido");
+	@Dado("^que o tipo do aluguel seja (comum|estendido|semanal)$")
+	public void queOTipoDoAluguelSejaEstendido(String tipo) throws Throwable {
+		if (tipo == "comum") {
+			nota.setTipoAluguel(tipo);
+		} else if (tipo == "semanal") {
+			nota.setTipoAluguel(tipo);
+		} else {
+			nota.setTipoAluguel(tipo);
+		}
 		tipoAluguel = nota.getTipoAluguel();
+		Assert.assertEquals(tipo, tipoAluguel);
 	}
 
 	@Dado("^que o preço de aluguel seja R\\$ (\\d+,\\d+)$")
 	public void queOPreçoDeAluguelSejaR$(double arg1) throws Throwable {
 		filme.adicionaPreco(arg1);
+		double precoFilme = filme.getPreco();
+		Assert.assertEquals(arg1, precoFilme, 0.2);
 	}
 
 	@Quando("^alugar$")
 	public void alugar() throws NoInventoryException {
 		try {
-			nota = aluguel.alugarFilme(filme, tipoAluguel);
+			nota = aluguel.alugarFilme(filme, "semanal");
 		} catch (Exception e) {
 			System.out.println("Estoque não disponível");
 		} finally {
@@ -55,18 +67,29 @@ public class LocadoraSteps {
 
 	@Então("^o preço do aluguel será R\\$ (\\d+,\\d+)$")
 	public void oPreçoDoAluguelSeráR$(int arg1) throws Throwable {
-
-		if (tipoAluguel == "estendido") {
-			double precoEstendido = arg1;
-			Assert.assertEquals(arg1, precoEstendido, 0.2);
+		double precoTotal;
+		if ("semanal".equals(tipoAluguel)) {
+			precoTotal = nota.retornaPreco() * 3;
+		} else if ("estendido".equals(tipoAluguel)) {
+			precoTotal = nota.retornaPreco() * 2;
 		} else {
-			Assert.assertEquals(arg1, nota.retornaPreco(), 0.2);
+			precoTotal = nota.retornaPreco();
 		}
-
+		Assert.assertEquals(arg1, precoTotal, 0.2);
 	}
 
 	@Então("^a data de entrega será no dia seguinte$")
 	public void aDataDeEntregaSeráNoDiaSeguinte() throws Throwable {
+
+	}
+
+	@Então("^o estoque do filme será (\\d+) unidade$")
+	public void oEstoqueDoFilmeSeráUnidade(int arg1) throws Throwable {
+		Assert.assertEquals(arg1, filme.getEstoque());
+	}
+
+	@Então("^a data de entrega será em (\\d+) dias$")
+	public void aDataDeEntregaSeráEmDias(int arg1) throws Throwable {
 		Calendar cal = Calendar.getInstance();
 		cal.add(cal.DAY_OF_MONTH, 1);
 
@@ -79,21 +102,18 @@ public class LocadoraSteps {
 		Assert.assertEquals(cal.get(Calendar.YEAR), calRetorno.get(Calendar.YEAR));
 	}
 
-	@Então("^o estoque do filme será (\\d+) unidade$")
-	public void oEstoqueDoFilmeSeráUnidade(int arg1) throws Throwable {
-		Assert.assertEquals(arg1, filme.getEstoque());
-	}
-
-	@Então("^a data de entrega será em (\\d+) dias$")
-	public void aDataDeEntregaSeráEmDias(int arg1) throws Throwable {
-
-	}
-
 	@Então("^a pontuação recebida será de (\\d+) pontos$")
 	public void aPontuaçãoRecebidaSeráDePontos(int arg1) throws Throwable {
-		nota.setPontuacaoFidelidade(arg1);
-		int pontuacao = nota.getPontuacaoFidelidade();
+		int pontuacao;
+		if ("semanal".equals(tipoAluguel)) {
+			pontuacao = nota.getPontuacaoFidelidade() * 3;
+		} else if ("estendido".equals(tipoAluguel)) {
+			pontuacao = nota.getPontuacaoFidelidade() * 2;
+		} else {
+			pontuacao = nota.getPontuacaoFidelidade();
+		}
 		Assert.assertEquals(arg1, pontuacao);
+
 	}
 
 }

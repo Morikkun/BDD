@@ -24,11 +24,15 @@ public class AluguelService {
 
 		String tipoAluguel = nota.getTipoAluguel();
 
-		if (tipoAluguel == "estendido") {
+		if ("estendido".equals(tipoAluguel)) {
 			nota.adicionaPreco(filme.getPreco() * 2);
-			nota.getPontuacaoFidelidade();
+			nota.setPontuacaoFidelidade(2);
+		} else if (tipoAluguel == "semanal") {
+			nota.adicionaPreco(filme.getPreco() * 8);
+			nota.setPontuacaoFidelidade(3);
 		} else {
 			nota.adicionaPreco(filme.getPreco());
+			nota.setPontuacaoFidelidade(1);
 		}
 
 		Calendar cal = Calendar.getInstance();

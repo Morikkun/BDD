@@ -10,7 +10,6 @@ public class NotaAluguel {
 
 	public void adicionaPreco(double d) {
 		this.precoTotal = d;
-
 	}
 
 	public double retornaPreco() {
