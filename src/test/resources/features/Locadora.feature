@@ -14,9 +14,9 @@ E a data de entrega será em <diasParaEntrega> dias
 E a pontuação recebida será de <pontuacaoCliente> pontos
 
 Exemplos:
-|preco   |    tipo    |  precoFinal  |  diasParaEntrega  |  pontuacaoCliente  |
-|  4,00  | estendido  |     8,00     |        3          |          2         |
+|  preco |    tipo    |  precoFinal  |  diasParaEntrega  |  pontuacaoCliente  |
 |  4,00  |   comum    |     4,00     |        1          |          1         |
+|  4,00  | estendido  |     8,00     |        3          |          2         |
 |  5,00  |  semanal   |    15,00     |        7          |          3         |
 
 @Locadora

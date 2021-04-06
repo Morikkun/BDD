@@ -9,111 +9,84 @@ import br.com.projeto.entities.Filme;
 import br.com.projeto.entities.NotaAluguel;
 import br.com.projeto.exception.NoInventoryException;
 import br.com.projeto.services.AluguelService;
+import cucumber.api.PendingException;
 import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.Então;
 import cucumber.api.java.pt.Quando;
 
 public class LocadoraSteps {
-
-	Filme filme = new Filme();
-	AluguelService aluguel = new AluguelService();
-	NotaAluguel nota = new NotaAluguel();
-	String tipoAluguel;
-	int pontuacao;
+	private Filme filme;
+	private NotaAluguel nota = new NotaAluguel();
+	private AluguelService aluguel;
+	String tipoDeAluguel;
+	String erro;
 
 	@Dado("^um filme com estoque de (\\d+) unidades$")
-
 	public void umFilmeComEstoqueDeUnidades(int arg1) throws Throwable {
-		filme.adicionaEstoque(arg1);
-		int estoqueFilme = filme.getEstoque();
-		Assert.assertEquals(arg1, arg1);
-	}
-
-	@Dado("^que o tipo do aluguel seja (comum|estendido|semanal)$")
-	public void queOTipoDoAluguelSejaEstendido(String tipo) throws Throwable {
-		if (tipo == "comum") {
-			nota.setTipoAluguel(tipo);
-		} else if (tipo == "semanal") {
-			nota.setTipoAluguel(tipo);
-		} else {
-			nota.setTipoAluguel(tipo);
-		}
-		tipoAluguel = nota.getTipoAluguel();
-		Assert.assertEquals(tipo, tipoAluguel);
+		filme = new Filme();
+		filme.setEstoqueFilme(arg1);
+		int quantidadeEstoque = filme.getEstoqueFilme();
+		Assert.assertEquals(arg1, quantidadeEstoque);
 	}
 
 	@Dado("^que o preço de aluguel seja R\\$ (\\d+,\\d+)$")
 	public void queOPreçoDeAluguelSejaR$(double arg1) throws Throwable {
-		filme.adicionaPreco(arg1);
-		double precoFilme = filme.getPreco();
-		Assert.assertEquals(arg1, precoFilme, 0.2);
+		filme.setValorLocacao(arg1);
+		double valorLocacao = filme.getValorLocacao();
+		Assert.assertEquals(arg1, valorLocacao, 0.2);
+	}
+
+	@Dado("^que o tipo do aluguel seja (comum|estendido|semanal)$")
+	public void queOTipoDoAluguelSejaEstendido(String tipo) throws Throwable {
+		nota.setTipoAluguel(tipo);
+		tipoDeAluguel = nota.getTipoAluguel();
+		Assert.assertEquals(tipo, tipoDeAluguel);
 	}
 
 	@Quando("^alugar$")
-	public void alugar() throws NoInventoryException {
+	public void alugar() throws Throwable {
+		aluguel = new AluguelService();
 		try {
-			nota = aluguel.alugarFilme(filme, "semanal");
-		} catch (Exception e) {
-			System.out.println("Estoque não disponível");
-		} finally {
-
+			nota = aluguel.alugar(filme, tipoDeAluguel);
+		} catch (NoInventoryException e) {
+			e.printStackTrace();
+			erro = e.getMessage();
 		}
-	}
-
-	@Então("^não será possível por falta de estoque$")
-	public void nãoSeráPossívelPorFaltaDeEstoque() throws Throwable {
 
 	}
 
 	@Então("^o preço do aluguel será R\\$ (\\d+,\\d+)$")
-	public void oPreçoDoAluguelSeráR$(int arg1) throws Throwable {
-		double precoTotal;
-		if ("semanal".equals(tipoAluguel)) {
-			precoTotal = nota.retornaPreco() * 3;
-		} else if ("estendido".equals(tipoAluguel)) {
-			precoTotal = nota.retornaPreco() * 2;
-		} else {
-			precoTotal = nota.retornaPreco();
-		}
-		Assert.assertEquals(arg1, precoTotal, 0.2);
-	}
-
-	@Então("^a data de entrega será no dia seguinte$")
-	public void aDataDeEntregaSeráNoDiaSeguinte() throws Throwable {
-
-	}
-
-	@Então("^o estoque do filme será (\\d+) unidade$")
-	public void oEstoqueDoFilmeSeráUnidade(int arg1) throws Throwable {
-		Assert.assertEquals(arg1, filme.getEstoque());
+	public void oPreçoDoAluguelSeráR$(double arg1) throws Throwable {
+		Assert.assertEquals(arg1, nota.getPrecoAluguel(), 0.2);
 	}
 
 	@Então("^a data de entrega será em (\\d+) dias$")
 	public void aDataDeEntregaSeráEmDias(int arg1) throws Throwable {
-		Calendar cal = Calendar.getInstance();
-		cal.add(cal.DAY_OF_MONTH, 1);
-
-		Date dataEntrega = nota.getDataDevolucao();
+		Calendar calEntreEsperada = Calendar.getInstance();
+		calEntreEsperada.add(Calendar.DAY_OF_MONTH, arg1);
+		Date dataDeRetorno = nota.getDataRetorno();
 		Calendar calRetorno = Calendar.getInstance();
-		calRetorno.setTime(dataEntrega);
+		calRetorno.setTime(dataDeRetorno);
 
-		Assert.assertEquals(cal.get(Calendar.DAY_OF_MONTH), calRetorno.get(Calendar.DAY_OF_MONTH));
-		Assert.assertEquals(cal.get(Calendar.MONTH), calRetorno.get(Calendar.MONTH));
-		Assert.assertEquals(cal.get(Calendar.YEAR), calRetorno.get(Calendar.YEAR));
+		Assert.assertEquals(calEntreEsperada.get(Calendar.DAY_OF_MONTH), calRetorno.get(Calendar.DAY_OF_MONTH));
+		Assert.assertEquals(calEntreEsperada.get(Calendar.MONTH), calRetorno.get(Calendar.MONTH));
+		Assert.assertEquals(calEntreEsperada.get(Calendar.YEAR), calRetorno.get(Calendar.YEAR));
+
 	}
 
 	@Então("^a pontuação recebida será de (\\d+) pontos$")
 	public void aPontuaçãoRecebidaSeráDePontos(int arg1) throws Throwable {
-		int pontuacao;
-		if ("semanal".equals(tipoAluguel)) {
-			pontuacao = nota.getPontuacaoFidelidade() * 3;
-		} else if ("estendido".equals(tipoAluguel)) {
-			pontuacao = nota.getPontuacaoFidelidade() * 2;
-		} else {
-			pontuacao = nota.getPontuacaoFidelidade();
-		}
-		Assert.assertEquals(arg1, pontuacao);
-
+		// Write code here that turns the phrase above into concrete actions
+		throw new PendingException();
 	}
 
+	@Então("^não será possível por falta de estoque$")
+	public void nãoSeráPossívelPorFaltaDeEstoque() throws Throwable {
+		Assert.assertEquals("Não há estoque disponível", erro);
+	}
+
+	@Então("^o estoque do filme será (\\d+) unidade$")
+	public void oEstoqueDoFilmeSeráUnidade(int arg1) throws Throwable {
+
+	}
 }

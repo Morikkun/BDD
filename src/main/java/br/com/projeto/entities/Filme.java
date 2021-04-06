@@ -1,26 +1,23 @@
 package br.com.projeto.entities;
 
 public class Filme {
-	private int estoque;
-	private double precoAluguel;
+	private int estoqueFilme;
+	private double valorLocacao;
 
-	public void adicionaEstoque(int i) {
-		this.estoque = i;
+	public int getEstoqueFilme() {
+		return estoqueFilme;
 	}
 
-	public void removeEstoque() {
-		this.estoque--;
+	public void setEstoqueFilme(int estoqueFilme) {
+		this.estoqueFilme = estoqueFilme;
 	}
 
-	public int getEstoque() {
-		return estoque;
+	public double getValorLocacao() {
+		return valorLocacao;
 	}
 
-	public void adicionaPreco(double preco) {
-		this.precoAluguel = preco;
+	public void setValorLocacao(double valorLocacao) {
+		this.valorLocacao = valorLocacao;
 	}
 
-	public double getPreco() {
-		return precoAluguel;
-	}
 }

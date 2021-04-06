@@ -3,33 +3,33 @@ package br.com.projeto.entities;
 import java.util.Date;
 
 public class NotaAluguel {
-	double precoTotal;
-	Date dataDevolucao;
-	String tipoAluguel;
-	int pontuacaoFidelidade;
+	private double precoAluguel;
+	private Date dataRetorno;
+	private String tipoAluguel;
+	private int pontuacaoFidelidade;
 
-	public void adicionaPreco(double d) {
-		this.precoTotal = d;
+	public double getPrecoAluguel() {
+		return precoAluguel;
 	}
 
-	public double retornaPreco() {
-		return this.precoTotal;
+	public void setPrecoAluguel(double precoAluguel) {
+		this.precoAluguel = precoAluguel;
 	}
 
-	public void setDataDevolucao(Date data) {
-		this.dataDevolucao = data;
+	public Date getDataRetorno() {
+		return dataRetorno;
 	}
 
-	public Date getDataDevolucao() {
-		return dataDevolucao;
-	}
-
-	public void setTipoAluguel(String tipo) {
-		this.tipoAluguel = tipo;
+	public void setDataRetorno(Date dataRetorno) {
+		this.dataRetorno = dataRetorno;
 	}
 
 	public String getTipoAluguel() {
-		return this.tipoAluguel;
+		return tipoAluguel;
+	}
+
+	public void setTipoAluguel(String tipoAluguel) {
+		this.tipoAluguel = tipoAluguel;
 	}
 
 	public int getPontuacaoFidelidade() {

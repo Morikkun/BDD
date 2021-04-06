@@ -4,44 +4,33 @@ import java.util.Calendar;
 
 import br.com.projeto.entities.Filme;
 import br.com.projeto.entities.NotaAluguel;
+import br.com.projeto.exception.NoInventoryException;
 
 public class AluguelService {
 
-	public NotaAluguel alugarFilme(Filme filme, String tipo) {
-		try {
-			if (filme.getEstoque() <= 0) {
-				System.out.println("Sem estoque");
-			} else {
-				filme.removeEstoque();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-
-		}
-
+	public NotaAluguel alugar(Filme filme, String tipo) throws NoInventoryException {
 		NotaAluguel nota = new NotaAluguel();
-
 		String tipoAluguel = nota.getTipoAluguel();
+		int estoque = filme.getEstoqueFilme();
 
-		if ("estendido".equals(tipoAluguel)) {
-			nota.adicionaPreco(filme.getPreco() * 2);
-			nota.setPontuacaoFidelidade(2);
-		} else if (tipoAluguel == "semanal") {
-			nota.adicionaPreco(filme.getPreco() * 8);
-			nota.setPontuacaoFidelidade(3);
-		} else {
-			nota.adicionaPreco(filme.getPreco());
-			nota.setPontuacaoFidelidade(1);
+		if (estoque <= 0) {
+			throw new NoInventoryException("Não há estoque disponível");
 		}
 
 		Calendar cal = Calendar.getInstance();
-
 		cal.add(Calendar.DAY_OF_MONTH, 1);
+		nota.setDataRetorno(cal.getTime());
 
-		nota.setDataDevolucao(cal.getTime());
-
+		if ("comum".equals(tipoAluguel)) {
+			nota.setPrecoAluguel(filme.getValorLocacao());
+			nota.setPontuacaoFidelidade(1);
+		} else if ("estendido".equals(tipoAluguel)) {
+			nota.setPrecoAluguel(filme.getValorLocacao() * 2);
+			nota.setPontuacaoFidelidade(2);
+		} else if ("semanal".equals(tipoAluguel)) {
+			nota.setPrecoAluguel(filme.getValorLocacao() * 3);
+			nota.setPontuacaoFidelidade(3);
+		}
 		return nota;
-
 	}
 }
