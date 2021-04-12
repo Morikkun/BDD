@@ -49,7 +49,6 @@ public class LocadoraSteps {
 		try {
 			nota = aluguel.alugar(filme, tipoDeAluguel);
 		} catch (NoInventoryException e) {
-			e.printStackTrace();
 			erro = e.getMessage();
 		}
 

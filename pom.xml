@@ -5,6 +5,10 @@
 	<groupId>br.com.bdd</groupId>
 	<artifactId>ProjetoAutomacao</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<properties>
+    <maven.compiler.source>15</maven.compiler.source>
+    <maven.compiler.target>15</maven.compiler.target>
+</properties>
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/info.cukes/cucumber-java -->
 		<dependency>
