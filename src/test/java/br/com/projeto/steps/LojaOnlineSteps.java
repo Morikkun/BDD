@@ -67,14 +67,81 @@ public class LojaOnlineSteps {
 		element.sendKeys(arg1);
 	}
 
-	@Quando("^inserir \"([^\"]*)\" como CEP$")
-	public void inserirComoCEP(String arg1) throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+	@Quando("^inserir \"([^\"]*)\"-\"([^\"]*)\" como CEP$")
+	public void inserirComoCEP(String arg1, String arg2) throws Throwable {
+		WebElement element = driver.findElement(By.id("textfield4"));
+		element.sendKeys(arg1);
+		WebElement element2 = driver.findElement(By.id("textfield5"));
+		element2.sendKeys(arg2);
 	}
 
 	@Quando("^clicar em cadastrar$")
 	public void clicar_em_cadastrar() throws Throwable {
+		WebElement element = driver.findElement(By.name("cadastrar"));
+		element.click();
+	}
+
+	@Quando("^inserir \"([^\"]*)\" como primeiro nome$")
+	public void inserirComoPrimeiroNome(String arg1) throws Throwable {
+		WebElement element = driver.findElement(By.id("textfield9"));
+		element.sendKeys(arg1);
+	}
+
+	@Quando("^inserir \"([^\"]*)\" como segundo nome$")
+	public void inserirComoSegundoNome(String arg1) throws Throwable {
+		WebElement element = driver.findElement(By.id("textfield10"));
+		element.sendKeys(arg1);
+	}
+
+	@Quando("^inserir o RG \"([^\"]*)\"$")
+	public void inserirORG(String arg1) throws Throwable {
+		WebElement element = driver.findElement(By.id("textfield12"));
+		element.sendKeys(arg1);
+	}
+
+	@Quando("^inserir uma data de nascimento$")
+	public void inserirUmaDataDeNascimento() throws Throwable {
+		WebElement element = driver.findElement(null)
+	}
+
+	@Quando("^inserir \"([^\"]*)\" como telefone fixo$")
+	public void inserirComoTelefoneFixo(String arg1) throws Throwable {
+		// Write code here that turns the phrase above into concrete actions
+		throw new PendingException();
+	}
+
+	@Quando("^inserir \"([^\"]*)\" como telefone celular$")
+	public void inserirComoTelefoneCelular(String arg1) throws Throwable {
+		// Write code here that turns the phrase above into concrete actions
+		throw new PendingException();
+	}
+
+	@Quando("^inserir \"([^\"]*)\" como número da residência$")
+	public void inserirComoNúmeroDaResidência(String arg1) throws Throwable {
+		// Write code here that turns the phrase above into concrete actions
+		throw new PendingException();
+	}
+
+	@Quando("^inserir \"([^\"]*)\" como complemento$")
+	public void inserirComoComplemento(String arg1) throws Throwable {
+		// Write code here that turns the phrase above into concrete actions
+		throw new PendingException();
+	}
+
+	@Quando("^inserir \"([^\"]*)\" como ponto de referência$")
+	public void inserirComoPontoDeReferência(String arg1) throws Throwable {
+		// Write code here that turns the phrase above into concrete actions
+		throw new PendingException();
+	}
+
+	@Quando("^concordar com os termos de uso$")
+	public void concordarComOsTermosDeUso() throws Throwable {
+		// Write code here that turns the phrase above into concrete actions
+		throw new PendingException();
+	}
+
+	@Quando("^clicar em concluir$")
+	public void clicarEmConcluir() throws Throwable {
 		// Write code here that turns the phrase above into concrete actions
 		throw new PendingException();
 	}
