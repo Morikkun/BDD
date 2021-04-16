@@ -1,14 +1,16 @@
 package br.com.projeto.steps;
 
+import java.util.concurrent.TimeUnit;
+
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.pt.Então;
 import cucumber.api.java.pt.Quando;
 
@@ -83,6 +85,7 @@ public class LojaOnlineSteps {
 
 	@Quando("^inserir \"([^\"]*)\" como primeiro nome$")
 	public void inserirComoPrimeiroNome(String arg1) throws Throwable {
+		driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 		WebElement element = driver.findElement(By.id("textfield9"));
 		element.sendKeys(arg1);
 	}
@@ -95,61 +98,87 @@ public class LojaOnlineSteps {
 
 	@Quando("^inserir o RG \"([^\"]*)\"$")
 	public void inserirORG(String arg1) throws Throwable {
-		WebElement element = driver.findElement(By.id("textfield12"));
+		WebElement element = driver.findElement(By.name("rg_ie"));
 		element.sendKeys(arg1);
 	}
 
-	@Quando("^inserir uma data de nascimento$")
-	public void inserirUmaDataDeNascimento() throws Throwable {
-		WebElement element = driver.findElement(null)
+	@Quando("^inserir \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\" como data de nascimento$")
+	public void inserirComoDataDeNascimento(String arg1, String arg2, String arg3) throws Throwable {
+		WebElement element = driver.findElement(By.cssSelector("#select4"));
+		Select select = new Select(element);
+		select.selectByVisibleText(arg1);
+
+		WebElement element2 = driver.findElement(By.cssSelector("#select5"));
+		Select select2 = new Select(element2);
+		select2.selectByVisibleText(arg2);
+
+		WebElement element3 = driver.findElement(By.cssSelector("#select6"));
+		Select select3 = new Select(element3);
+		select3.selectByVisibleText(arg3);
 	}
 
-	@Quando("^inserir \"([^\"]*)\" como telefone fixo$")
-	public void inserirComoTelefoneFixo(String arg1) throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+	@Quando("^inserir \"([^\"]*)\" \"([^\"]*)\" como telefone fixo$")
+	public void inserirComoTelefoneFixo(String arg1, String arg2) throws Throwable {
+		WebElement element = driver.findElement(By.name("telefone_ddd"));
+		element.sendKeys(arg1);
+
+		WebElement element2 = driver.findElement(By.name("telefone"));
+		element2.sendKeys(arg2);
 	}
 
-	@Quando("^inserir \"([^\"]*)\" como telefone celular$")
-	public void inserirComoTelefoneCelular(String arg1) throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+	@Quando("^inserir \"([^\"]*)\" \"([^\"]*)\" como telefone celular$")
+	public void inserirComoTelefoneCelular(String arg1, String arg2) throws Throwable {
+		WebElement element = driver.findElement(By.name("celular_ddd"));
+		element.sendKeys(arg1);
+
+		WebElement element2 = driver.findElement(By.name("celular"));
+		element2.sendKeys(arg2);
 	}
 
 	@Quando("^inserir \"([^\"]*)\" como número da residência$")
 	public void inserirComoNúmeroDaResidência(String arg1) throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+		WebElement element = driver.findElement(By.name("endereco_numero"));
+		element.sendKeys(arg1);
 	}
 
 	@Quando("^inserir \"([^\"]*)\" como complemento$")
 	public void inserirComoComplemento(String arg1) throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+		WebElement element = driver.findElement(By.name("endereco_complemento"));
+		element.sendKeys(arg1);
 	}
 
 	@Quando("^inserir \"([^\"]*)\" como ponto de referência$")
 	public void inserirComoPontoDeReferência(String arg1) throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+		WebElement element = driver.findElement(By.name("endereco_referencia"));
+		element.sendKeys(arg1);
+	}
+
+	@Quando("^concordar em receber newsletter$")
+	public void concordarEmReceberNewsletter() throws Throwable {
+		WebElement element = driver.findElement(By.name("newsletter"));
+		Select select = new Select(element);
+		select.selectByVisibleText("Sim");
+	}
+
+	@Quando("^indicar que conheceu a loja através do \"([^\"]*)\"$")
+	public void indicarQueConheceuALojaAtravésDo(String arg1) throws Throwable {
+		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+		WebElement element = driver.findElement(By.name("origem"));
+		Select select = new Select(element);
+		select.selectByVisibleText(arg1);
 	}
 
 	@Quando("^concordar com os termos de uso$")
 	public void concordarComOsTermosDeUso() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+		WebElement element = driver.findElement(By.name("aceite"));
+		element.click();
 	}
 
-	@Quando("^clicar em concluir$")
+	@Então("^clicar em concluir$")
 	public void clicarEmConcluir() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
-	}
-
-	@Então("^a área do cliente será exibida$")
-	public void a_área_do_cliente_será_exibida() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+		WebElement element = driver.findElement(By.name("cadastrar"));
+		element.click();
+		driver.manage().timeouts().implicitlyWait(3, null);
 	}
 
 }
