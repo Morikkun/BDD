@@ -1,6 +1,7 @@
 package br.com.projeto.steps;
 
 import org.junit.Assert;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -86,6 +87,7 @@ public class LojaOnlineEmailExistenteSteps {
 		String urlEsperada = "https://www.kabum.com.br/cgi-local/site/login/login.cgi?msg=2";
 		String urlAtual = driver.getCurrentUrl();
 		Assert.assertEquals(urlEsperada, urlAtual);
+		driver.close();
 	}
 
 	@Quando("^entro com o e-mail \"([^\"]*)\"$")
@@ -99,7 +101,10 @@ public class LojaOnlineEmailExistenteSteps {
 
 	@Quando("^entro com a senha \"([^\"]*)\"$")
 	public void entroComASenha(String arg1) throws Throwable {
-		WebElement element = driver.findElement(By.id("textfield15"));
+		String elementoId = "textfield15";
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.id(elementoId)));
+		WebElement element = driver.findElement(By.id(elementoId));
 		element.sendKeys(arg1);
 	}
 
@@ -110,11 +115,34 @@ public class LojaOnlineEmailExistenteSteps {
 		Thread.sleep(3000);
 	}
 
-	@Então("^sou notificado de que meu e-mail está incorreto$")
+	@Então("^sou notificado de que meu e-mail ou senha estão incorretos$")
 	public void souNotificadoDeQueMeuEMailEstáIncorreto() throws Throwable {
 		String urlEsperada = "https://www.kabum.com.br/cgi-local/site/login/login.cgi?msg=1";
 		String urlRecebida = driver.getCurrentUrl();
 		Assert.assertEquals(urlEsperada, urlRecebida);
+		driver.close();
+	}
+
+	@Então("^um alerta me informa que preciso inserir a senha$")
+	public void umAlertaMeInformaQuePrecisoInserirASenha() throws Throwable {
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+		String textoAlerta = alert.getText();
+		String textoEsperado = "Senha não foi informada";
+		Assert.assertEquals(textoEsperado, textoAlerta);
+		alert.accept();
+		driver.close();
+	}
+
+	@Então("^um alerta me informa que preciso inserir o login/email$")
+	public void umAlertaMeInformaQuePrecisoInserirOLoginEmail() throws Throwable {
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+		String textoAlerta = alert.getText();
+		String textoEsperado = "O Campo Login/E-mail não foi preenchido corretamente";
+		Assert.assertEquals(textoEsperado, textoAlerta);
+		alert.accept();
+		driver.close();
 	}
 
 }
