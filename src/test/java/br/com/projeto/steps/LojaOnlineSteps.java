@@ -1,19 +1,26 @@
 package br.com.projeto.steps;
 
+import java.io.File;
+
+import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import cucumber.api.Scenario;
+import cucumber.api.java.After;
 import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.Então;
 import cucumber.api.java.pt.Quando;
 
-public class LojaOnlineEmailExistenteSteps {
+public class LojaOnlineSteps {
 
 	String path = "C:\\Users\\Diego\\eclipse-workspace\\ProjetoAutomacao\\src\\test\\resources\\drivers\\chromedriver.exe";
 
@@ -120,7 +127,7 @@ public class LojaOnlineEmailExistenteSteps {
 		String urlEsperada = "https://www.kabum.com.br/cgi-local/site/login/login.cgi?msg=1";
 		String urlRecebida = driver.getCurrentUrl();
 		Assert.assertEquals(urlEsperada, urlRecebida);
-		driver.close();
+
 	}
 
 	@Então("^um alerta me informa que preciso inserir a senha$")
@@ -131,7 +138,7 @@ public class LojaOnlineEmailExistenteSteps {
 		String textoEsperado = "Senha não foi informada";
 		Assert.assertEquals(textoEsperado, textoAlerta);
 		alert.accept();
-		driver.close();
+
 	}
 
 	@Então("^um alerta me informa que preciso inserir o login/email$")
@@ -142,6 +149,22 @@ public class LojaOnlineEmailExistenteSteps {
 		String textoEsperado = "O Campo Login/E-mail não foi preenchido corretamente";
 		Assert.assertEquals(textoEsperado, textoAlerta);
 		alert.accept();
+
+	}
+
+	@After(order = 1)
+	public void screenShot(Scenario cenario) {
+		File file = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+		try {
+			FileUtils.copyFile(file, new File("target/screenshots/" + cenario.getId() + ".jpg"));
+		} catch (Exception e) {
+			e.getMessage();
+			e.printStackTrace();
+		}
+	}
+
+	@After(order = 0)
+	public void fecharNavegador() {
 		driver.close();
 	}
 
