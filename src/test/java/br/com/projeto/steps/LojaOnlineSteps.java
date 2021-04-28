@@ -94,7 +94,6 @@ public class LojaOnlineSteps {
 		String urlEsperada = "https://www.kabum.com.br/cgi-local/site/login/login.cgi?msg=2";
 		String urlAtual = driver.getCurrentUrl();
 		Assert.assertEquals(urlEsperada, urlAtual);
-		driver.close();
 	}
 
 	@Quando("^entro com o e-mail \"([^\"]*)\"$")
@@ -165,7 +164,7 @@ public class LojaOnlineSteps {
 
 	@After(order = 0)
 	public void fecharNavegador() {
-		driver.close();
+		driver.quit();
 	}
 
 }
