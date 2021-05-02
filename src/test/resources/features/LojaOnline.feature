@@ -1,5 +1,6 @@
 #language: pt
 
+@Funcional
 Funcionalidade: Validar funcionalidade de cadastro
 
 
@@ -7,7 +8,7 @@ Contexto: Acesso à aplicação
 Dado que estou acessando a aplicação
 Quando clico no botão LOGIN | CADASTRAR para fazer meu cadastro
 
-@Conta
+
 Cenário: Não deve cadastrar um usuário com dados já existentes
 E cadastro com o e-mail "usuariodeteste20212021@outlook.com"
 E cadastro com a senha "HOje2021"
@@ -17,7 +18,7 @@ E cadsatro com o CEP "81891"-"000"
 E clico em cadastrar
 Então sou notificado de que o e-mail já está em uso
 
-@Conta
+
 Cenário: Não deve acessar a aplicação com um e-mail incorreto
 Dado que estou acessando a aplicação
 Quando clico no botão LOGIN | CADASTRAR para entrar na minha conta
@@ -26,7 +27,7 @@ E entro com a senha "HOje2021"
 E quando clico em entrar
 Então sou notificado de que meu e-mail ou senha estão incorretos
 
-@Conta
+
 Cenário: Não deve acessar a aplicação com senha incorreta
 Dado que estou acessando a aplicação
 Quando clico no botão LOGIN | CADASTRAR para entrar na minha conta
@@ -36,7 +37,7 @@ E quando clico em entrar
 Então sou notificado de que meu e-mail ou senha estão incorretos
 
 
-@Conta
+
 Cenário: Deve exibir um alerta ao tentar logar só com o e-mail
 Dado que estou acessando a aplicação
 Quando clico no botão LOGIN | CADASTRAR para entrar na minha conta
@@ -44,7 +45,7 @@ E entro com o e-mail "usuariodeteste20212021@outlook.com"
 E quando clico em entrar
 Então um alerta me informa que preciso inserir a senha
 
-@Conta
+
 Cenário: Deve exibir um alerta ao tentar logar só com a senha
 Dado que estou acessando a aplicação
 Quando clico no botão LOGIN | CADASTRAR para entrar na minha conta

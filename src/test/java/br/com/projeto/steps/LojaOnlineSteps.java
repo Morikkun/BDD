@@ -94,7 +94,6 @@ public class LojaOnlineSteps {
 		String urlEsperada = "https://www.kabum.com.br/cgi-local/site/login/login.cgi?msg=2";
 		String urlAtual = driver.getCurrentUrl();
 		Assert.assertEquals(urlEsperada, urlAtual);
-		driver.close();
 	}
 
 	@Quando("^entro com o e-mail \"([^\"]*)\"$")
@@ -152,7 +151,7 @@ public class LojaOnlineSteps {
 
 	}
 
-	@After(order = 1)
+	@After(order = 1, value = "@Funcional")
 	public void screenShot(Scenario cenario) {
 		File file = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 		try {
@@ -163,9 +162,9 @@ public class LojaOnlineSteps {
 		}
 	}
 
-	@After(order = 0)
+	@After(order = 0, value = "@Funcional")
 	public void fecharNavegador() {
-		driver.close();
+		driver.quit();
 	}
 
 }
